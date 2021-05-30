@@ -1,0 +1,68 @@
+
+    
+    /**Color botón personalizado*/
+    
+    .btn-ttc,
+    .btn-ttc:hover,
+    .btn-ttc:active {
+        color: white;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        background-color: #BF835F;
+    }
+    /**Botón subir en la página */
+    
+    #scroll {
+        position: fixed;
+        z-index: 1;
+        right: 10px;
+        bottom: 10px;
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        background-color: black;
+        text-indent: -9999px;
+        display: none;
+        -webkit-border-radius: 60px;
+        -moz-border-radius: 60px;
+        border-radius: 60px
+    }
+    
+    #scroll span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -8px;
+        margin-top: -12px;
+        height: 0;
+        width: 0;
+        border: 8px solid transparent;
+        border-bottom-color: white
+    }
+    
+    #scroll:hover {
+        background-color: black;
+        opacity: 1;
+        filter: "alpha(opacity=100)";
+        -ms-filter: "alpha(opacity=100)";
+    }
+    
+    /** Hasta aquí botón personalizado*/
+    
+    .centrar {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+     /** Texto justificado **/
+    
+    .justifica {
+        text-align: justify;
+    }
+    
+            
+    .sinSubrayado {
+        text-decoration: none;
+    }
+    /* Letra Blog*/
+    
+    
