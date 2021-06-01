@@ -10,69 +10,10 @@ $(document).ready(function() {
     //Ocultamos formulario de Registro
     $('#formulario').hide();
     // Función para lista de Registro
-    function fetchLista() {
-        $.post('./php/lista.php', { tabla }, (response) => {
-                console.log(response);
-                const registros = JSON.parse(response);
-                let template = '';
-                console.log(registros);
-                registros.forEach(registro => {
-                    // Creamos Tabla
-                    //var res = registro.solucion.substring(0, 150);
-                    template += `
-                    <tr codigo="${registro.ID}">
-                    <td>${registro.ID}</td>
-                    <td>${registro.MODO}</td>
-                    <td>${registro.DIA}</td>
-                    <td>${registro.HORA_ENTRADA}</td>
-                    <td>${registro.HORA_SALIDA}</td>
-                    <td>
-                      <button class="leer btn btn-info">
-                      <i class="fas fa-book-open"></i>
-                      Leer
-                      </button>
-                      <button class="modificar btn btn-success">
-                      <i class="fas fa-edit"></i>
-                      Modificar
-                      </button>
-                      <button class="borrar btn btn-danger">
-                      <i class="fas fa-trash"></i>
-                       Borrar 
-                    </td>
-                    </tr>
-                  `
-                });
-                $('#tabla').html(template);
-            }
-        );
-    }
+    
     
     //Mostrar Registro seleccionado de tabla
-    $(document).on('click', '.leer', (e) => {
-        CKEDITOR.instances.solucion.destroy();
-        // Hacemos visible el formulario para mostrar el registro
-        $('#formulario').show();
-        ponreadonly('true');
-        const element = $(this)[0].activeElement.parentElement.parentElement;
-        const cod = $(element).attr('codigo');
-        let template = ``;
-        // Nos devuelve el Registro y lo ponemos en el formulario
-        $.post('./php/devuelveRegistro.php', { cod , tabla }, (response) => {
-            console.log(response);
-            const registro = JSON.parse(response);
-            $('#codigoformulario').val(registro.id);
-            $('#incidencia').val(registro.incidencia);
-            $('#fecha').val(registro.fecha);
-            $('#solucion').val(registro.solucion);
-            CKEDITOR.replace("solucion", {
-                uiColor: '#f3f3f3',
-                language: 'es',
-                height:400
-            });
-            $('.grabar').hide();
-        });
-        e.preventDefault();
-    });
+   
 
     // Nuevo Registro
     $(document).on('click', '#nuevoRegistro', (e) => {
@@ -94,69 +35,34 @@ $(document).ready(function() {
         edit = false;
     });
     // Función para poner 2 digitos a la fecha y hora
-    function dosdigitos(n) {
-        return (n < 10 ? '0' : '') + n;
-    }
-
-    // Botón Grabar
-    $('#formulario').submit(e => {
-        e.preventDefault();
-        const cod = $('#codigoformulario').val()
-            
-        const postData = {
-            incidencia_id: cod,
-            incidencia: $('#incidencia').val(),
-            solucion: $('#solucion').val(),
-            fecha: $('#fecha').val(),
-        };
-            // Comprobamos si estamos editando o añadiendo Registro para llamar a uno o a otro
-            const url = edit === false ? './php/nuevoRegistro.php' : './php/updateRegistro.php';
-            console.log(postData, url);
-            $.ajax({
-                url: url,
-                type: 'post',
-                data: postData,
-                dataType: 'json',
-                success: function(response) {
-                    console.log(response);
-                    if (response == 0) {
-                        alertify.success('Registro Grabado')
-                    } else {
-                        alertify.error('Ha ocurrido en un error en BBDD');
-                    } 
-                    $('#formulario').trigger('reset');
-                    // Quitamos form y botón guardar
-                    $('#formulario').hide();
-                    fetchLista();
-                }
-            });
-    });
-
+    
     //Click en modificar
     $(document).on('click', '.modificar', (e) => {
-        CKEDITOR.instances.solucion.destroy();
-        // Hacemos visible el formulario para mostrar el registro
+        
+        // Hacem   os visible el formulario para mostrar el registro
         $('#formulario').show();
         // edit a true 
         edit = 'true';
         ponreadonly(false);
         const element = $(this)[0].activeElement.parentElement.parentElement;
-        const cod = $(element).attr('codigo');
+        const id = $(element).attr('codigo');
+        const modo = $(element).attr('modo');
+        const dia = $(element).attr('dia');
+        console.log(id);
+        console.log(modo);
+        console.log(dia);
         //console.log(cod);
         let template = ``;
         // Nos devuelve el Registro y lo ponemos en el formulario
-        $.post('./php/devuelveRegistro.php', { cod , tabla}, (response) => {
+        $.post('./php/devuelveRegistro.php', { id, dia, modo , tabla}, (response) => {
             console.log(response);
             const registro = JSON.parse(response);
-            $('#codigoformulario').val(registro.id);
-            $('#incidencia').val(registro.incidencia);
-            $('#solucion').val(registro.solucion);
-            $('#fecha').val(registro.fecha);
-            CKEDITOR.replace("solucion", {
-                uiColor: '#f3f3f3',
-                language: 'es',
-                height:400
-            });
+            $('#id').val(registro.ID);
+            $('#dia').val(registro.DIA);
+            $('#modo').val(registro.MODO);
+            $('#entrada').val(registro.HORA_ENTRADA);
+            $('#salida').val(registro.HORA_SALIDA);
+            
             $('.grabar').show();
         });
         e.preventDefault();
@@ -200,7 +106,7 @@ $(document).ready(function() {
         let valor = $('#search').val();
         // Metemos en una variable por lo que se va a filtrar
         let filtro = "ID";
-        $.post('./php/devuelveRegistro.php', { valor , tabla2}, (response) => {
+        $.post('./php/devuelveRegistroDni.php', { valor , tabla2}, (response) => {
             console.log(response);
             const registro = JSON.parse(response);
             console.log(registro);
@@ -222,17 +128,14 @@ $(document).ready(function() {
                     // Creamos Tabla
                     //var res = registro.solucion.substring(0, 150);
                     template += `
-                    <tr codigo="${registro.ID}">
+                    <tr codigo="${registro.ID}" modo="${registro.MODO}" dia="${registro.DIA}">
                     <td style="display: none;">${registro.ID}</td>
                     <td>${registro.DIA}</td>
                     <td>${modo}</td>
                     <td>${registro.HORA_ENTRADA}</td>
                     <td>${registro.HORA_SALIDA}</td>
                     <td>
-                      <button class="leer btn btn-info">
-                      <i class="fas fa-book-open"></i>
-                      Leer
-                      </button>
+                     
                       <button class="modificar btn btn-success">
                       <i class="fas fa-edit"></i>
                       Modificar

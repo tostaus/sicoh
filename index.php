@@ -119,26 +119,25 @@
                         <!-- FORMULARIO -->
                         <form id="formulario" enctype="multipart/form-data">
                         <!--No cambiamos nunca el id codigo para poder enlazarlo siempre igual-->
-                        <input type="number" id="codigoformulario" hidden>
+                        <input type="number" id="id" hidden>
                             <div class="form-group">
-                                <label for="incidencia">Incidencia</label>
-                                <input type="text" id="incidencia" class="form-control" required>
+                                <label for="dia">DIA</label>
+                                <input type="text" id="dia" class="form-control" required>
                             </div>
                             <div class="form-group">
-                                <label for="solucion">Solución</label>
-                                <textarea id="solucion" name="solucion"></textarea>
+                                <label for="horario">HORARIO</label>
+                                <input type="text" id="modo" class="form-control" required>
                             </div>
-                            <script>
-                            CKEDITOR.replace("solucion", {
-                                    uiColor: '#f3f3f3',
-                                    language: 'es',
-                                    height:400
-                                });
-                            </script>
+                            
                             <div class="form-group">
-                                <label for="fecha">Fecha</label>
-                            <input type="date" name="fecha" id="fecha" required>
+                                <label for="entrada">ENTRADA</label>
+                                <input type="datatime-local" id="entrada" class="form-control" required>
                             </div>
+                            <div class="form-group">
+                                <label for="salida">SALIDA</label>
+                                <input type="datatime-local" id="salida" class="form-control" required>
+                            </div>
+                            
                         <br>
                         <br>
                         <button class="grabar btn btn-danger" type="submit">

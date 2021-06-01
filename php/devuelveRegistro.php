@@ -1,9 +1,11 @@
+
 <?php
   include ('../clases/claseDB.php');
   
-    $cod = $_POST['valor'];
-    $tabla= $_POST['tabla2'];
+    $id = $_POST['id'];
+    $dia= $_POST['dia'];
+    $modo= $_POST['modo'];
+    $tabla= $_POST['tabla'];
 
-    DB::devuelveRegistro($cod,$tabla);
-
+    DB::devuelveRegistro($id, $dia, $modo, $tabla);
 ?>
