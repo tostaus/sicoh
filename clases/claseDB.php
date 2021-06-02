@@ -154,24 +154,25 @@ class DB {
  */
     // Función para modificar registro de Incidencia
     public static function updateRegistro($row){
-    
-        self::conexion();
-        // Cargamos registro que vamos a modificar
-        $incidencias = R::load('incidencias',$row['id']); 
-        
 
-        $incidencias->incidencia=$row['incidencia'];
-        $incidencias->solucion=$row['solucion'];
-        $incidencias->fecha=$row['fecha'];
-    
+        $conecta=self::conectar();
+        $id=$row['id'];
+        $modo=$row['modo'];
+        $dia=$row['dia'];
+        $entrada=$row['entrada'];
+        $salida=$row['salida'];
+       
+        $consulta= "UPDATE SICOH_COMPUTO_MARCAJE_MySQL SET HORA_ENTRADA = '$entrada', HORA_SALIDA='$salida' WHERE id=$id and modo=$modo and DIA = '$dia'";
+        $resultado = $conecta->prepare($consulta);
         try{
-            R::store($incidencias);
+            $resultado ->execute();
             echo 0;
         }catch (Exception $e){ // Capturamos el error si se produce
             $mensaje = $e->getMessage();
-                die("No se ha podido Modificar Registro: " . $e->getMessage()); 
+                die("No se ha podido borrar Entrada: " . $e->getMessage()); 
             echo 1;
         }
+       
         
 
     }

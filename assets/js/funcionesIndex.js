@@ -12,8 +12,45 @@ $(document).ready(function() {
     // Función para lista de Registro
     
     
-    //Mostrar Registro seleccionado de tabla
    
+     // Botón Grabar
+     $('#formulario').submit(e => {
+        e.preventDefault();
+        //const cod = $('#codigoformulario').val()
+        
+        let entradaP = $('#entrada').val()+" "+$('#entrada_tiempo').val();
+        let salidaP = $('#salida').val()+" "+$('#salida_tiempo').val();
+        console.log(entrada);
+        const postData = {
+            id:  $('#id').val(),
+            dia: $('#dia').val(),
+            modo: $('#modo').val(),
+            entrada: entradaP,
+            salida: salidaP,
+        };
+            
+            // Comprobamos si estamos editando o añadiendo Registro para llamar a uno o a otro
+            const url = edit === false ? './php/nuevoRegistro.php' : './php/updateRegistro.php';
+            console.log(postData, url);
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: postData,
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                    if (response == 0) {
+                        alertify.success('Registro Grabado')
+                    } else {
+                        alertify.error('Ha ocurrido en un error en BBDD');
+                    } 
+                    $('#formulario').trigger('reset');
+                    // Quitamos form y botón guardar
+                    $('#formulario').hide();
+                    fetchLista();
+                }
+            });
+    });
 
     // Nuevo Registro
     $(document).on('click', '#nuevoRegistro', (e) => {
@@ -57,11 +94,19 @@ $(document).ready(function() {
         $.post('./php/devuelveRegistro.php', { id, dia, modo , tabla}, (response) => {
             console.log(response);
             const registro = JSON.parse(response);
+            // Formateamos la fecha para que solo se pueda modificar la hora y no el día
+            let horaEntrada =registro.HORA_ENTRADA.split(' ')[1];
+            let diaEntrada = registro.HORA_ENTRADA.split(' ')[0];
+            let horaSalida =registro.HORA_SALIDA.split(' ')[1];
+            let diaSalida = registro.HORA_SALIDA.split(' ')[0];
+            
             $('#id').val(registro.ID);
             $('#dia').val(registro.DIA);
             $('#modo').val(registro.MODO);
-            $('#entrada').val(registro.HORA_ENTRADA);
-            $('#salida').val(registro.HORA_SALIDA);
+            $('#entrada').val(diaEntrada);
+            $('#entrada_tiempo').val(horaEntrada);
+            $('#salida').val(diaSalida);
+            $('#salida_tiempo').val(horaSalida);
             
             $('.grabar').show();
         });
@@ -103,6 +148,79 @@ $(document).ready(function() {
         // Ocultamos form 
         $('#formulario').hide();
         // Metemos en una variable lo que se va escribiendo en search
+        fetchLista();
+        /*let valor = $('#search').val();
+        // Metemos en una variable por lo que se va a filtrar
+        let filtro = "ID";
+        $.post('./php/devuelveRegistroDni.php', { valor , tabla2}, (response) => {
+            console.log(response);
+            const registro = JSON.parse(response);
+            console.log(registro);
+            $('#fichajesde').html("Fichajes de:"+" "+registro.APELLIDOS+ ", " +registro.NOMBRE+"-"+registro.DNI);
+        });
+        $.ajax({
+            url: './php/buscaRegistro.php',
+            data: { tabla, valor, filtro },
+            type: 'POST',
+            success: function(response) {
+                const registros = JSON.parse(response);
+                let template = '';
+                console.log(registros);
+                registros.forEach(registro => {
+                    var modo;
+                    if (registro.MODO==1){
+                        modo="MAÑANA";
+                    }else{modo="TARDE";};
+                    // Creamos Tabla
+                    //var res = registro.solucion.substring(0, 150);
+                    template += `
+                    <tr codigo="${registro.ID}" modo="${registro.MODO}" dia="${registro.DIA}">
+                    <td style="display: none;">${registro.ID}</td>
+                    <td>${registro.DIA}</td>
+                    <td>${modo}</td>
+                    <td>${registro.HORA_ENTRADA}</td>
+                    <td>${registro.HORA_SALIDA}</td>
+                    <td>
+                     
+                      <button class="modificar btn btn-success">
+                      <i class="fas fa-edit"></i>
+                      Modificar
+                      </button>
+                      <button class="borrar btn btn-danger">
+                      <i class="fas fa-trash"></i>
+                       Borrar 
+                    </td>
+                    </tr>
+                  `
+                });
+                $('#tabla').html(template);
+            }
+        });*/
+    });
+
+    // Cerrar formulario
+    $(document).on('click', '.cerrar', (e) => {
+        e.preventDefault();
+        $('#formulario').hide();
+    });
+    
+    // Quitamos o ponemos readonly campos formulario
+    function ponreadonly(no) {
+        $('#incidencia').attr('readonly', no);
+        $('#solucion').attr('readonly', no);
+        $('#fecha').attr('readonly', no);
+    }
+
+    // Fecha de hoy
+    function fechaprint() {
+        var fecha = new Date(); //Fecha actual
+        var mes = fecha.getMonth() + 1; //obteniendo mes
+        var dia = fecha.getDate(); //obteniendo dia
+        var ano = fecha.getFullYear(); //obteniendo año
+        return ano + "-" + dosdigitos(mes) + "-" + dosdigitos(dia);
+    };
+
+    function fetchLista(){
         let valor = $('#search').val();
         // Metemos en una variable por lo que se va a filtrar
         let filtro = "ID";
@@ -150,27 +268,5 @@ $(document).ready(function() {
                 $('#tabla').html(template);
             }
         });
-    });
-
-    // Cerrar formulario
-    $(document).on('click', '.cerrar', (e) => {
-        e.preventDefault();
-        $('#formulario').hide();
-    });
-    
-    // Quitamos o ponemos readonly campos formulario
-    function ponreadonly(no) {
-        $('#incidencia').attr('readonly', no);
-        $('#solucion').attr('readonly', no);
-        $('#fecha').attr('readonly', no);
-    }
-
-    // Fecha de hoy
-    function fechaprint() {
-        var fecha = new Date(); //Fecha actual
-        var mes = fecha.getMonth() + 1; //obteniendo mes
-        var dia = fecha.getDate(); //obteniendo dia
-        var ano = fecha.getFullYear(); //obteniendo año
-        return ano + "-" + dosdigitos(mes) + "-" + dosdigitos(dia);
     };
 });

@@ -122,20 +122,26 @@
                         <input type="number" id="id" hidden>
                             <div class="form-group">
                                 <label for="dia">DIA</label>
-                                <input type="text" id="dia" class="form-control" required>
+                                <input type="text" id="dia" class="form-control" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="horario">HORARIO</label>
-                                <input type="text" id="modo" class="form-control" required>
+                                <label for="modo">HORARIO</label>
+                                <!--input type="text" id="modo" class="form-control" required-->
+                                <select id="modo" class="form-control" disabled="true">
+                                    <option value="1">MAÑANA</option> 
+                                    <option value="2">TARDE</option> 
+                                    
+                                </select>
                             </div>
                             
                             <div class="form-group">
                                 <label for="entrada">ENTRADA</label>
-                                <input type="datatime-local" id="entrada" class="form-control" required>
+                                <input type="date" id="entrada" class="form-control" readonly>
+                                <input type="text" id="entrada_tiempo" class="form-control"  required>
                             </div>
                             <div class="form-group">
-                                <label for="salida">SALIDA</label>
-                                <input type="datatime-local" id="salida" class="form-control" required>
+                                <input type="date" id="salida" class="form-control" readonly>
+                                <input type="text" id="salida_tiempo" class="form-control"  required>
                             </div>
                             
                         <br>
