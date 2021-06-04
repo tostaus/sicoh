@@ -132,7 +132,7 @@ class DB {
 
     }
   // Función que devuelve filtro  de la BUSQUEDA
-    public static function buscaRegistros($valor,$filtro,$tabla){
+    public static function buscaRegistros($valor,$valor2,$filtro,$tabla){
         //  Filtro no lo utilizo, no lo quito por no liarlo más
         $tabla2="SICOH_PERSONAL_MySQL";
         self::conexion();
@@ -142,7 +142,7 @@ class DB {
         
         echo json_encode( R::getAll("SELECT {$tabla}.* , {$tabla2}.* FROM {$tabla} ,{$tabla2}
         WHERE {$tabla2}.DNI like ? AND 
-        {$tabla}.ID= {$tabla2}.ID
+        {$tabla}.ID= {$tabla2}.ID AND {$tabla}.DIA = '{$valor2}'
         ORDER BY DIA DESC",array("{$busca}")));
         }catch (Exception $e){ // Capturamos el error si se produce
             $mensaje = $e->getMessage();

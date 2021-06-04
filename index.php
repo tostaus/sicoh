@@ -79,7 +79,9 @@
                         <!--button class="btn btn-outline-success" type="button" id="nuevoRegistro"> <i class="fas fa-folder-plus"> </i> Nuevo registro</button-->
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
-                        <input name="search" id="search" class="form-control mr-sm-2" type="search" placeholder="DNI" aria-label="Search">
+                        
+                    <input name="search" id="search" class="form-control mr-sm-2" type="search" placeholder="DNI" aria-label="Search">
+                    <input name="search_fecha" id="search_fecha" class="form-control mr-sm-2" type="date" placeholder="fecha" aria-label="Search">
                         <!-- Con Botón -->
                         <button class="buscar btn btn-success my-2 my-sm-0" type="button" id="buscar">Buscar</button>
                         <!--select class="form-control" id="filtro">

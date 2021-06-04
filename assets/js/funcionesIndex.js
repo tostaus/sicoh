@@ -147,8 +147,29 @@ $(document).ready(function() {
         console.log('Buscando');
         // Ocultamos form 
         $('#formulario').hide();
+        let valor = $('#search').val();
+        // Metemos en una variable por lo que se va a filtrar
+        let filtro = "ID";
+        $.post('./php/devuelveRegistroDni.php', { valor , tabla2}, (response) => {
+            const registro = JSON.parse(response);
+            if(registro==null){
+                console.log('esnull');
+                $('#fichajesde').hide();
+                $('#tabla').hide();
+                alertify.error('No existe Registro con ese DNI');
+
+                
+            }else{console.log(response);
+                const registro = JSON.parse(response);
+                console.log(registro);
+                $('#fichajesde').show();
+                $('#fichajesde').html("Fichajes de:"+" "+registro.APELLIDOS+ ", " +registro.NOMBRE+"-"+registro.DNI);
+                $('#tabla').show();
+                fetchLista();}
+           
+        });
         // Metemos en una variable lo que se va escribiendo en search
-        fetchLista();
+        
         /*let valor = $('#search').val();
         // Metemos en una variable por lo que se va a filtrar
         let filtro = "ID";
@@ -222,17 +243,14 @@ $(document).ready(function() {
 
     function fetchLista(){
         let valor = $('#search').val();
+        let valor2 = $('#search_fecha').val()+" "+"00:00:00";
+        console.log("esto es la fecha "+valor2);
+
         // Metemos en una variable por lo que se va a filtrar
         let filtro = "ID";
-        $.post('./php/devuelveRegistroDni.php', { valor , tabla2}, (response) => {
-            console.log(response);
-            const registro = JSON.parse(response);
-            console.log(registro);
-            $('#fichajesde').html("Fichajes de:"+" "+registro.APELLIDOS+ ", " +registro.NOMBRE+"-"+registro.DNI);
-        });
         $.ajax({
             url: './php/buscaRegistro.php',
-            data: { tabla, valor, filtro },
+            data: { tabla, valor, valor2, filtro },
             type: 'POST',
             success: function(response) {
                 const registros = JSON.parse(response);
