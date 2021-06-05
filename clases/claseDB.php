@@ -6,10 +6,17 @@ include ('../assets/vendor/redBean/rb.php');
  
 class DB {
     protected static function conectar(){
-        $db_host = 'localhost';  //  hostname 
+        /**$db_host = 'localhost';  //  hostname 
         $db_name = 'SICOH';  //  databasename
         $db_user = 'root';  //  username
-        $user_pw = 'inmanuel';  //  password
+        $user_pw = 'inmanuel';  //  password*/
+        // Para Producción abajo
+        $db_host = '10.193.133.21';  //  hostname 
+        $db_name = 'SICOH';  //  databasename
+        $db_user = 'root';  //  username
+        $user_pw = 'babylon';  //  password
+        
+        
         try {
             $conexion = new PDO('mysql:host='.$db_host.'; dbname='.$db_name, $db_user, $user_pw);
             $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -24,11 +31,11 @@ class DB {
     protected static function conexion(){
 
         // Descomentar estas dos líneas cuando este en producción y quitar las de abajo
-       // R::setup( 'mysql:host=10.193.133.21;dbname=SICOH',
-       // 'root', 'babylon' ); //for both mysql or mariaDB
+        R::setup( 'mysql:host=10.193.133.21;dbname=SICOH',
+       'root', 'babylon' ); //for both mysql or mariaDB
        
-        R::setup( 'mysql:host=localhost;dbname=SICOH',
-        'root', 'inmanuel' ); //for both mysql or mariaDB
+        //R::setup( 'mysql:host=localhost;dbname=SICOH',
+       //'root', 'inmanuel' ); //for both mysql or mariaDB
     }
 
     // Función que devuelve los Registros de una tabla

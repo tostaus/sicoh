@@ -17,8 +17,20 @@ $(document).ready(function() {
      $('#formulario').submit(e => {
         e.preventDefault();
         //const cod = $('#codigoformulario').val()
-        
-        let entradaP = $('#entrada').val()+" "+$('#entrada_tiempo').val();
+        // Validar hora con expresión regular formato HH:MM:SS
+    // ^([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$
+
+    //sACADO DE http://w3.unpocodetodo.info/utiles/regex-ejemplos.php?type=hora
+   
+    
+        var expreg= new RegExp("^([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$");
+        var horaEntrada=$("#entrada_tiempo").val();
+        var horaSalida=$("#salida_tiempo").val();
+        if (!expreg.test(horaEntrada) || !expreg.test(horaSalida)) {
+            alertify.error('Formato hora erróneo');
+        }else{
+
+            let entradaP = $('#entrada').val()+" "+$('#entrada_tiempo').val();
         let salidaP = $('#salida').val()+" "+$('#salida_tiempo').val();
         console.log(entrada);
         const postData = {
@@ -50,6 +62,9 @@ $(document).ready(function() {
                     fetchLista();
                 }
             });
+        }
+    
+        
     });
 
     // Nuevo Registro
@@ -241,6 +256,9 @@ $(document).ready(function() {
         return ano + "-" + dosdigitos(mes) + "-" + dosdigitos(dia);
     };
 
+    
+   
+
     function fetchLista(){
         let valor = $('#search').val();
         let valor2 = $('#search_fecha').val()+" "+"00:00:00";
@@ -276,9 +294,7 @@ $(document).ready(function() {
                       <i class="fas fa-edit"></i>
                       Modificar
                       </button>
-                      <button class="borrar btn btn-danger">
-                      <i class="fas fa-trash"></i>
-                       Borrar 
+                      
                     </td>
                     </tr>
                   `
