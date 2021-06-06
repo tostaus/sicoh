@@ -2,7 +2,7 @@
   include ('../clases/claseDB.php');
   
   $tabla = $_POST['tabla'];
-    
-    DB::lista($tabla);
+  $valor = $_POST['valor'];
+    DB::lista($tabla,$valor);
 
 ?>

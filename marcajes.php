@@ -86,11 +86,13 @@
                     
                     </ul-->
                     <ul class="navbar-nav mx-auto mb-2 mb-md-0">
+                    <a href="index.php" class="btn btn-outline-success" role="button"">
+                    <i class="fas fa-undo"></i>
+                    Volver</a>
                         <!--button class="btn btn-outline-success" type="button" id="nuevoRegistro"> <i class="fas fa-folder-plus"> </i> Nuevo registro</button-->
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
                         
-                    
                     <input name="search_fecha" id="search_fecha" class="form-control mr-sm-2" type="date" placeholder="fecha" aria-label="Search">
                         <!-- Con Botón -->
                         <button class="buscar btn btn-success my-2 my-sm-0" type="button" id="buscar">Buscar</button>

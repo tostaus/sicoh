@@ -24,8 +24,8 @@ $(document).ready(function() {
                     <td>${registro.APELLIDOS}</td>
                     <td>${registro.NOMBRE}</td>
                     <td>
-                    <a href="marcajes.php?cod=${registro.ID}" class="btn btn-ttc" role="button"">
-                    <i class="fas fa-trash"></i>
+                    <a href="marcajes.php?cod=${registro.ID}" class="btn btn-info" role="button"">
+                    <i class="fas fa-highlighter"></i>
                     Marcajes</a>
                       
                     </td>
@@ -67,8 +67,8 @@ $(document).ready(function() {
                     <td>${registro.APELLIDOS}</td>
                     <td>${registro.NOMBRE}</td>
                     <td>
-                    <a href="marcajes.php?cod=${registro.ID}" class="btn btn-ttc" role="button"">
-                    <i class="fas fa-trash"></i>
+                    <a href="marcajes.php?cod=${registro.ID}" class="btn btn-info" role="button"">
+                    <i class="fas fa-highlighter"></i>
                     Marcajes</a>
                     </td>
                     </tr>

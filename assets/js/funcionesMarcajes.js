@@ -61,7 +61,7 @@ $(document).ready(function() {
                     $('#formulario').trigger('reset');
                     // Quitamos form y botón guardar
                     $('#formulario').hide();
-                    fetchLista();
+                    fetchListaPersonal();
                 }
             });
         }
@@ -69,7 +69,7 @@ $(document).ready(function() {
         
     });
 
-    // Nuevo Registro
+    // Nuevo Registro ***NO UTILIZADO 
     $(document).on('click', '#nuevoRegistro', (e) => {
         console.log('NuevoRegistro');
         e.preventDefault();
@@ -130,7 +130,7 @@ $(document).ready(function() {
         e.preventDefault();
     });
 
-    // Borrar Registro
+    // Borrar Registro **NO UTILIZADO
     $(document).on('click', '.borrar', (e) => {
         $('#formulario').hide();
         e.preventDefault();
@@ -193,14 +193,58 @@ $(document).ready(function() {
               
            
         });
+        $.ajax({
+            url: './php/lista.php',
+            data: { tabla, valor},
+            type: 'POST',
+            success: function(response) {
+                const registros = JSON.parse(response);
+                if(registros.length==0){
+                    alertify.error('No hay Marcajes de ese día para esta Persona');
+                };
+                let template = '';
+                console.log(registros);
+                registros.forEach(registro => {
+                    var modo;
+                    if (registro.MODO==1){
+                        modo="MAÑANA";
+                    }else{modo="TARDE";};
+                    // Creamos Tabla
+                    //var res = registro.solucion.substring(0, 150);
+                    template += `
+                    <tr codigo="${registro.ID}" modo="${registro.MODO}" dia="${registro.DIA}">
+                    <td style="display: none;">${registro.ID}</td>
+                    <td>${registro.DIA}</td>
+                    <td>${modo}</td>
+                    <td>${registro.HORA_ENTRADA}</td>
+                    <td>${registro.HORA_SALIDA}</td>
+                    <td>
+                     
+                      <button class="modificar btn btn-success">
+                      <i class="fas fa-edit"></i>
+                      Modificar
+                      </button>
+                      
+                    </td>
+                    </tr>
+                  `
+                });
+                $('#tabla').html(template);
+            }
+        });
 
     };
     
    
 
     function fetchLista(){
+
         let valor = cod;
-        let valor2 = $('#search_fecha').val()+" "+"00:00:00";
+       
+            let valor2 = $('#search_fecha').val()+" "+"00:00:00";
+
+        
+    
         console.log("esto es la fecha "+valor2);
 
         // Metemos en una variable por lo que se va a filtrar
@@ -213,6 +257,9 @@ $(document).ready(function() {
             type: 'POST',
             success: function(response) {
                 const registros = JSON.parse(response);
+                if(registros.length==0){
+                    alertify.error('No hay Marcajes de ese día para esta Persona');
+                };
                 let template = '';
                 console.log(registros);
                 registros.forEach(registro => {

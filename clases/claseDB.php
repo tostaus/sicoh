@@ -5,8 +5,22 @@
 include ('../assets/vendor/redBean/rb.php');
  
 class DB {
-    protected static function conectar(){
-        $db_host = 'localhost';  //  hostname 
+    
+    // Conexión BBDD con redBean
+    protected static function conexion(){
+
+        // Descomentar estas dos líneas cuando este en producción y quitar las de abajo
+       // R::setup( 'mysql:host=10.193.133.21;dbname=SICOH',
+       //'root', 'babylon' ); //for both mysql or mariaDB
+       // ***** LAS DOS CONEXIONES TANTO PARA EL UPDATE QUE USA LA CONEXION PDO
+       // ***** COMO PARA LO DEMAS QUE USA LA DE Readbeans
+
+       
+        R::setup( 'mysql:host=localhost;dbname=SICOH',
+       'root', 'inmanuel' ); //for both mysql or mariaDB
+
+
+       $db_host = 'localhost';  //  hostname 
         $db_name = 'SICOH';  //  databasename
         $db_user = 'root';  //  username
         $user_pw = 'inmanuel';  //  password*/
@@ -25,17 +39,6 @@ class DB {
             die("Error: " . $e->getMessage()); 
         }
         return $conexion;
-
-    }
-    // Conexión BBDD con redBean
-    protected static function conexion(){
-
-        // Descomentar estas dos líneas cuando este en producción y quitar las de abajo
-        //R::setup( 'mysql:host=10.193.133.21;dbname=SICOH',
-       //'root', 'babylon' ); //for both mysql or mariaDB
-       
-        R::setup( 'mysql:host=localhost;dbname=SICOH',
-       'root', 'inmanuel' ); //for both mysql or mariaDB
     }
 
     // Función que devuelve los Registros de una tabla
@@ -44,6 +47,20 @@ class DB {
         self::conexion();
         try{
             echo json_encode( R::getAll("SELECT * FROM {$tabla} ORDER BY APELLIDOS" ));
+
+        }catch (Exception $e){ // Capturamos el error si se produce
+            $mensaje = $e->getMessage();
+                die("No se ha podido encontrar Registros: " . $e->getMessage()); 
+        }
+        
+       
+    }
+
+
+    public static function lista($tabla,$valor){
+        self::conexion();
+        try{
+            echo json_encode( R::getAll("SELECT * FROM {$tabla} WHERE ID={$valor} ORDER BY DIA DESC" ));
 
         }catch (Exception $e){ // Capturamos el error si se produce
             $mensaje = $e->getMessage();
@@ -85,19 +102,7 @@ class DB {
         }
        
     }
-     // Función para devolver un Registro de una tabla
-     /*self::conexion();
-     $dia1="2021-04-12T00:00:00.000";
-     try{
-         echo json_encode( R::getRow("SELECT * FROM {$tabla} where id=$id AND DIA=$dia1"));
-
-     }catch (Exception $e){ // Capturamos el error si se produce
-         $mensaje = $e->getMessage();
-             die("No se ha podido encontrar Registros: " . $e->getMessage()); 
-     };*/
     
-    
-    //$datetime = new DateTime('2010-12-30 23:21:46');
 
      //$dia1= $datetime->format(DateTime::ATOM); // Updated ISO8601
      public static function devuelveRegistro($id, $dia, $modo ,$tabla){
@@ -115,27 +120,7 @@ class DB {
          $mensaje = $e->getMessage();
              die("No se ha podido encontrar Registros: " . $e->getMessage()); 
      };
-        //formato tiene que ser 2011-04-12T00:00:00.000
-        //$dia1 = "2021-05-13T00:00:00.000";
-
-        //$dia1= $dia->format(DateTime::ATOM); // Updated ISO8601
-        //$dia1="2021-05-28 00:00:00";
-        //$dia1=DateTime::createFromFormat('Y-m-d H', $dia);
-
-       // $consulta ="SELECT * FROM $tabla WHERE ID=$id and MODO=$modo and DIA=$dia1";
-        //$resultado = $conecta->prepare($consulta);
-        // Intentamos la consulta
-        //try{
-         //   $resultado ->execute();
-          //  $registros = $resultado->fetch();
-           /* $jsonstring = json_encode($registros);
-            
-            echo $jsonstring;
-        }catch (Exception $e){ // Capturamos el error si se produce
-            $mensaje = $e->getMessage();
-                die($dia1);
-                die("No se ha podido devolver el Registro: " . $e->getMessage()); 
-        }*/
+      
        
     }
    
@@ -180,7 +165,7 @@ class DB {
     // Función para modificar registro de Incidencia
     public static function updateRegistro($row){
 
-        $conecta=self::conectar();
+        $conecta=self::conexion();
         $id=$row['id'];
         $modo=$row['modo'];
         $dia=$row['dia'];
