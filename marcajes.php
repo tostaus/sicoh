@@ -1,3 +1,13 @@
+<?php
+    // Comprobamos que hay sesión abierta
+    
+    if (isset($_GET['cod'])){
+        $cod = $_GET['cod'];
+        
+    }
+    //http://192.168.1.154/admin/correo.php?leido=0
+
+?>
 <!doctype html>
 <html lang="es">
 <head>
@@ -45,7 +55,7 @@
         <div class="container">
         <HR>
             <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-                <a class="navbar-brand" href="#">Marcajes</a>
+                <a class="navbar-brand" id="fichajesde" href="#"></a>
                 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -79,14 +89,16 @@
                         <!--button class="btn btn-outline-success" type="button" id="nuevoRegistro"> <i class="fas fa-folder-plus"> </i> Nuevo registro</button-->
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
-                        <input name="search" id="search" class="form-control mr-sm-2" type="search" placeholder="Buscar" aria-label="Search">
+                        
+                    
+                    <input name="search_fecha" id="search_fecha" class="form-control mr-sm-2" type="date" placeholder="fecha" aria-label="Search">
                         <!-- Con Botón -->
-                        <!--button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button-->
-                        <select class="form-control" id="filtro">
-                            <option value="APELLIDOS">Apellidos</option>
-                            <option value="DNI">DNI</option>
-                           
-                        </select>
+                        <button class="buscar btn btn-success my-2 my-sm-0" type="button" id="buscar">Buscar</button>
+                        <!--select class="form-control" id="filtro">
+                            <option value="ID">ID</option>
+                            <option value="MODO">MODO</option>
+                            <option value="DIA">DIA</option>
+                        </select-->
                     </form>
                 </div>
             </nav>
@@ -95,24 +107,70 @@
     <main>
         <br>
         <div class="container-fluid">
-            <div class="row p-1" >
-                <!-- TABLA  -->
-                <div class="col-md-12">
+            <div class="row p-2" >
+                <!-- Campo para filtrar  -->
+                <input type="text" id="cod" value = "<?php echo $cod;?>" hidden>
+                <div class="col-md-6">
                     <table class="table table-bordered table-sm">
                         <thead>
                             <tr class="info">
                                 <!--td>Código</td -->
-                                <th>ID</th>
-                                <th>DNI</th>
-                                <th>APELLIDOS</th>
-                                <th>NOMBRE</th>
-                                <th></th>
+                                <th style="display: none;">ID</th>
+                                <th>DIA</th>
+                                <th>HORARIO</th>
+                                <th>ENTRADA</th>
+                                <th>SALIDA</th>
+                               
                             </tr>
                         </thead>
                         <tbody id="tabla"></tbody>
                     </table>
                 </div>
-                
+                <div class="col-md-6">
+                    <div class="card" id="formulario">
+                    <div class="card-body" id="formulario">
+                        <!-- FORMULARIO -->
+                        <form id="formulario" enctype="multipart/form-data">
+                        <!--No cambiamos nunca el id codigo para poder enlazarlo siempre igual-->
+                        <input type="number" id="id" hidden>
+                            <div class="form-group">
+                                <label for="dia">DIA</label>
+                                <input type="text" id="dia" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modo">HORARIO</label>
+                                <!--input type="text" id="modo" class="form-control" required-->
+                                <select id="modo" class="form-control" disabled="true">
+                                    <option value="1">MAÑANA</option> 
+                                    <option value="2">TARDE</option> 
+                                    
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="entrada">ENTRADA</label>
+                                <input type="date" id="entrada" class="form-control" readonly>
+                                <input type="text" id="entrada_tiempo" class="form-control"  required>
+                            </div>
+                            <div class="form-group">
+                                <input type="date" id="salida" class="form-control" readonly>
+                                <input type="text" id="salida_tiempo" class="form-control"  required>
+                            </div>
+                            
+                        <br>
+                        <br>
+                        <button class="grabar btn btn-danger" type="submit">
+                        <i class="fas fa-save"></i>
+                                Grabar 
+                        </button>
+                        <button class="cerrar btn btn-info">
+                        <i class="fas fa-window-close"></i>
+                            Cerrar 
+                        </button>
+                        </form>
+                    </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -126,7 +184,7 @@
     <script src="./assets/vendor/alertify/js/alertify.min.js"></script>
 
     <!--Script de la página -->
-    <script src="./assets/js/funcionesIndex.js"></script>
+    <script src="./assets/js/funcionesMarcajes.js"></script>
 
 
 </body>
